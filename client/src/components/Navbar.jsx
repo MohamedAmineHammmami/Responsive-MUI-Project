@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -13,47 +13,54 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import DropdownList from "./DropdownList";
+
+const Logo = styled("h1")(({ theme }) => ({
+  display: "none",
+  fontWeight: "900",
+  fontSize: "3rem",
+  [theme.breakpoints.up("sm")]: { display: "block" },
+}));
+const LogoIcon = styled("div")(({ theme }) => ({
+  [theme.breakpoints.up("sm")]: { display: "none" },
+}));
+const NavBar = styled(Toolbar)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  //using sm:small screen breakpoint
+  [theme.breakpoints.down("sm")]: { gap: "0.5rem" },
+}));
+const Search = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: "1%",
+  backgroundColor: "white",
+  borderRadius: theme.shape.borderRadius,
+  width: "40%",
+  padding: "0 10px",
+}));
+const Badges = styled(Box)(({ theme }) => ({
+  width: "11%",
+  display: "flex",
+  justifyContent: "space-between",
+  //using custome width
+  ["@media (max-width:800px)"]: { display: "none" },
+}));
+const Username = styled(Typography)(({ theme }) => ({
+  fontWeight: "bold",
+  fontSize: "1rem",
+  [theme.breakpoints.up("sm")]: { fontSize: "1.5rem" },
+  ["@media(max-width:750px)"]: { fontSize: "1.2rem" },
+  ["@media(max-width:470px)"]: { fontSize: "1rem" },
+  ["@media(max-width:400px)"]: { fontSize: "0.8rem" },
+}));
 
 function Navbar() {
-  const Logo = styled("h1")(({ theme }) => ({
-    display: "none",
-    fontWeight: "900",
-    fontSize: "3rem",
-    [theme.breakpoints.up("sm")]: { display: "block" },
-  }));
-  const LogoIcon = styled("div")(({ theme }) => ({
-    [theme.breakpoints.up("sm")]: { display: "none" },
-  }));
-  const NavBar = styled(Toolbar)(({ theme }) => ({
-    display: "flex",
-    justifyContent: "space-between",
-    //using sm:small screen breakpoint
-    [theme.breakpoints.down("sm")]: { gap: "0.5rem" },
-  }));
-  const Search = styled("div")(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    gap: "1%",
-    backgroundColor: "white",
-    borderRadius: theme.shape.borderRadius,
-    width: "40%",
-    padding: "0 10px",
-  }));
-  const Badges = styled(Box)(({ theme }) => ({
-    width: "11%",
-    display: "flex",
-    justifyContent: "space-between",
-    //using custome width
-    ["@media (max-width:800px)"]: { display: "none" },
-  }));
-  const Username = styled(Typography)(({ theme }) => ({
-    fontWeight: "bold",
-    fontSize: "1rem",
-    [theme.breakpoints.up("sm")]: { fontSize: "1.5rem" },
-  }));
+  const [dropDownState, setDropDownState] = useState(false);
+
   return (
-    <Box>
-      <AppBar position="sticky">
+    <Box mb={6}>
+      <AppBar position="fixed">
         <NavBar>
           <LogoIcon>
             <LogoDevIcon sx={{ fontSize: "2.5rem" }} />
@@ -84,11 +91,13 @@ function Navbar() {
                 width: { xs: "50px", sm: "60px", md: "60px", lg: "65px" },
                 height: { xs: "50px", sm: "60px", md: "60px", lg: "65px" },
               }}
+              onClick={() => setDropDownState(!dropDownState)}
             />
             <Username>Med-Amine</Username>
           </Box>
         </NavBar>
       </AppBar>
+      {dropDownState && <DropdownList />}
     </Box>
   );
 }
